@@ -1,0 +1,101 @@
+.todoListItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: white;
+  border-radius: 16px;
+  margin: 1rem 0rem;
+  overflow: hidden;
+  padding: 0;
+  height: 100px;
+  opacity: 1;
+  transition: opacity 0.25s ease-out;
+}
+.todoListItem[iscompleted="true"] {
+  opacity: 0.5;
+}
+.leftPartition {
+  width: 70%;
+  display: flex;
+  margin: 0.5rem 0rem;
+  align-items: center;
+  border-right: 2px solid black;
+}
+.completedIconSpan {
+  margin: 0.5rem;
+  border: 2px solid black;
+  border-radius: 100%;
+  padding: 5px;
+  cursor: pointer;
+}
+.completedIconSpan[iscompleted="false"] > .completedIcon {
+  opacity: 0;
+}
+
+.completedIconSpan:hover > .completedIcon {
+  opacity: 0.5;
+  transform: scale(1.25);
+  transition: all 0.15s ease-out;
+}
+.todoInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+.todoInfo p:first-of-type {
+  font-weight: bold;
+  font-size: 1.25rem;
+}
+.todoInfo p:last-of-type {
+  font-size: 0.8rem;
+}
+.rightPartition {
+  width: 30%;
+  display: flex;
+  justify-content: space-between;
+
+  margin: 0;
+  padding: 0;
+  padding-left: 0.5rem;
+  height: 100% !important;
+}
+.dateText {
+  font-size: 1rem;
+  text-align: center;
+  align-self: center;
+  padding: 0.5rem;
+  border-radius: 12px;
+  color: white;
+}
+.icons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100% !important;
+  width: auto;
+  padding: 0;
+}
+.icon {
+  height: 50% !important;
+  padding: 0.5rem;
+  cursor: pointer;
+  text-align: center;
+  border: 2px solid transparent;
+  width: auto;
+  text-align: center;
+}
+.icon:first-of-type {
+  border-top-right-radius: 16px;
+}
+.icon:last-of-type {
+  border-bottom-right-radius: 16px;
+}
+.icon:hover {
+  background-color: black;
+  color: white;
+}
+.icon:active {
+  background-color: white;
+  color: black;
+  border-color: black;
+}

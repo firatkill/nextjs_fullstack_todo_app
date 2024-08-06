@@ -1,0 +1,29 @@
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Todo {
+  id       String    @id @default(auto()) @map("_id") @db.ObjectId
+  todoName String    @unique
+  todoDescription String
+  todoCategory Category @relation(fields:[todoCategoryId],references:[id],onDelete: Cascade)
+  todoCategoryId String @db.ObjectId
+  todoColor String
+  date String
+  completed Boolean
+  createdAt String
+  user_id String?
+
+}
+
+model Category{
+  id       String    @id @default(auto()) @map("_id") @db.ObjectId
+  categoryName String
+  todos Todo[]
+}
+

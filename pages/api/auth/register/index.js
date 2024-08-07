@@ -2,6 +2,7 @@ import getTurkeyTime from "@/functions/other/timeNow";
 import mailStringCheck from "@/functions/other/mailStringCheck";
 import EncryptPassword from "@/functions/auth/utils/encryptPassword";
 import { createNewData, getDataByUnique } from "@/services/serviceOperations";
+import prisma from "@/lib/prisma";
 
 const handler = async (req, res) => {
   if (!req) {
@@ -49,6 +50,7 @@ const handler = async (req, res) => {
         }
 
         //aynı emaille başka kullanıcı var mı?
+        await prisma.$connect();
         const allUserCheck = await getDataByUnique("user", {
           email: data.email,
         });

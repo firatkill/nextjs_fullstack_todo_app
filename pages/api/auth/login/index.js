@@ -1,5 +1,6 @@
 import DecryptPassword from "@/functions/auth/utils/decryptPassword";
 import mailStringCheck from "@/functions/other/mailStringCheck";
+import prisma from "@/lib/prisma";
 import { getDataByUnique } from "@/services/serviceOperations";
 
 const handler = async (req, res) => {
@@ -22,6 +23,7 @@ const handler = async (req, res) => {
       }
 
       // kullanıcı verilerini sorgula / şifreleri karşılaştır.
+      await prisma.$connect();
       const userFromDB = await getDataByUnique("user", { email: data.email });
 
       if (

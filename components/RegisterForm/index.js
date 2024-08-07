@@ -3,8 +3,9 @@ import mailStringCheck from "@/functions/other/mailStringCheck";
 import { postAPI } from "@/services/fetchAPI";
 import { Button, Divider, TextField, Typography } from "@mui/material";
 import { green } from "@mui/material/colors";
+import { signOut } from "next-auth/react";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function RegisterForm() {
   const [name, setName] = useState("");

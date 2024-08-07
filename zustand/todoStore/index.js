@@ -16,9 +16,11 @@ const useTodoStore = create((set, get) => ({
     }));
   },
   addTodo: (todo) => {
+    const newTodos = get().todos.slice(0);
+    newTodos.push(todo);
     set((state) => ({
       ...state,
-      todos: [...state.todos, todo],
+      todos: newTodos,
     }));
   },
   deleteTodo: (todoId) => {

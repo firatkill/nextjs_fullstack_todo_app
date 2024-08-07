@@ -20,6 +20,7 @@ import { green } from "@mui/material/colors";
 import { useEffect } from "react";
 import { getAPI } from "@/services/fetchAPI";
 import { useCategoryStore } from "@/zustand/categoryStore";
+import { signOut } from "next-auth/react";
 
 export default function SidebarComponent() {
   const todoCategories = useCategoryStore((state) => state.todoCategories);
@@ -129,7 +130,12 @@ export default function SidebarComponent() {
             <ListItemText primary={"Settings"} />
           </ListItemButton>
         </ListItem>
-        <ListItem disablePadding>
+        <ListItem
+          onClick={() => {
+            signOut({ redirect: "true", callbackUrl: "/auth/login" });
+          }}
+          disablePadding
+        >
           <ListItemButton>
             <ListItemIcon>
               <Logout />

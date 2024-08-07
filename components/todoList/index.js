@@ -4,20 +4,21 @@ import { useEffect } from "react";
 import { useGlobalStore } from "@/zustand/globalStore";
 import { getAPI } from "@/services/fetchAPI";
 import { useTodoStore } from "@/zustand/todoStore";
+import { useSession } from "next-auth/react";
 
 export default function TodoList() {
   const todos = useTodoStore((state) => state.todos);
   const setTodos = useTodoStore((state) => state.setTodos);
   const currentCategory = useGlobalStore((state) => state.currentTodoCategory);
-
+  const session = useSession();
   const setLoading = useGlobalStore((state) => state.handleLoading);
   useEffect(() => {
     setLoading(true);
+
     const todosData = getAPI("/todos/getAllTodos");
     todosData
       .then((res) => {
         setTodos(res);
-
         setLoading(false);
       })
       .catch((er) => {

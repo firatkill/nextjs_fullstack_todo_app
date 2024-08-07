@@ -1,6 +1,7 @@
 import { postAPI } from "@/services/fetchAPI";
 import { useCategoryStore } from "@/zustand/categoryStore";
 import { useGlobalStore } from "@/zustand/globalStore";
+import { useUserStore } from "@/zustand/userStore";
 import { Button, TextField } from "@mui/material";
 import { green } from "@mui/material/colors";
 import { useState } from "react";
@@ -10,13 +11,20 @@ export default function AddCategoryModal() {
   const setLoading = useGlobalStore((state) => state.handleLoading);
   const setModal = useGlobalStore((state) => state.handleActiveModal);
   const addTodoCategory = useCategoryStore((state) => state.addTodoCategory);
+  const currentUser = useUserStore((state) => state.currentUser);
+
   const submitHandler = (e) => {
     e.preventDefault();
     setLoading(true);
-    const req = postAPI(`/categories/postCategory`, { categoryName });
+
+    const req = postAPI(`/categories/postCategory`, {
+      categoryName,
+      userId: currentUser.id,
+    });
     req
       .then((res) => {
         setLoading(false);
+
         addTodoCategory(res.category.category);
         setModal(null);
       })

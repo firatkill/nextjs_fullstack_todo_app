@@ -1,4 +1,6 @@
 import { createNewData } from "@/services/serviceOperations";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../../auth/[...nextauth]";
 
 const handler = async (req, res) => {
   if (!req) {
@@ -6,9 +8,11 @@ const handler = async (req, res) => {
   }
   if (req.method === "POST") {
     try {
+      const session = await getServerSession(req, res, authOptions);
       const data = req.body;
 
-      if (!data.categoryName) {
+      data.userId = session.user.id;
+      if (!data.categoryName || !data.userId) {
         throw new Error(
           "Girdiğiniz bilgilerde hata var. Lütfen kontrol ediniz."
         );

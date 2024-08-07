@@ -1,5 +1,10 @@
 import TodoList from "@/components/todoList";
+import MainContainer from "@/containers/MainContainer/MainContainer";
 
 export default function Home() {
-  return <TodoList />;
+  return (
+    <MainContainer>
+      <TodoList />
+    </MainContainer>
+  );
 }

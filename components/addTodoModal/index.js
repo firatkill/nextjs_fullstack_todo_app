@@ -19,12 +19,14 @@ import { useGlobalStore } from "@/zustand/globalStore";
 import { getAPI, postAPI } from "@/services/fetchAPI";
 import { useCategoryStore } from "@/zustand/categoryStore";
 import { useTodoStore } from "@/zustand/todoStore";
+import { useUserStore } from "@/zustand/userStore";
 
 export default function AddTodoModal() {
   const todoCategories = useCategoryStore((state) => state.todoCategories);
   const setTodoCategories = useCategoryStore(
     (state) => state.setTodoCategories
   );
+  const currentUser = useUserStore((state) => state.currentUser);
   const addTodo = useTodoStore((state) => state.addTodo);
   const [todoName, setTodoName] = useState("");
   const [todoDescription, setTodoDescription] = useState("");
@@ -55,9 +57,7 @@ export default function AddTodoModal() {
       date,
       todoColor,
       todoCategoryId,
-      user_id: null,
-      completed: false,
-      createdAt: dayjs().toISOString(),
+      userId: currentUser.id,
     };
 
     //Post todotoAdd
@@ -67,6 +67,7 @@ export default function AddTodoModal() {
     req
       .then((res) => {
         setLoading(false);
+
         addTodo(res.todo.todo);
         setModal(null);
       })
@@ -122,7 +123,7 @@ export default function AddTodoModal() {
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DateTimePicker
             onChange={(newValue) => {
-              setDate(newValue.toDate().toLocaleString());
+              setDate(newValue.toDate().toISOString());
             }}
             defaultValue={dayjs(new Date(date))}
             disablePast

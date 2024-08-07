@@ -3,6 +3,8 @@ import mailStringCheck from "@/functions/other/mailStringCheck";
 import EncryptPassword from "@/functions/auth/utils/encryptPassword";
 import { createNewData, getDataByUnique } from "@/services/serviceOperations";
 import prisma from "@/lib/prisma";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../[...nextauth]";
 
 const handler = async (req, res) => {
   if (!req) {
@@ -12,7 +14,7 @@ const handler = async (req, res) => {
   }
 
   //getServerSession:  Kullanıcının oturum açıp açmadığını kontrol eder. Eğer açılmışsa session değişkenine atar.
-
+  const session = await getServerSession(req, res, authOptions);
   if (!session) {
     const date = (await getTurkeyTime()).date;
     const time = (await getTurkeyTime()).time;

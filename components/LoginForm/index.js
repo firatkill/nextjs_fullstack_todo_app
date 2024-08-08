@@ -3,7 +3,6 @@ import mailStringCheck from "@/functions/other/mailStringCheck";
 import { useGlobalStore } from "@/zustand/globalStore";
 import { useUserStore } from "@/zustand/userStore";
 import { Button, Divider, TextField, Typography } from "@mui/material";
-import { green } from "@mui/material/colors";
 import { signIn, signOut } from "next-auth/react";
 
 import Link from "next/link";
@@ -78,23 +77,16 @@ export default function LoginForm() {
         type="submit"
         variant="contained"
         sx={{
-          color: "white",
           marginTop: "1rem",
-          background: green[800],
-          "&:hover": {
-            background: "white",
-            color: green[800],
-          },
+
+          "&:hover": {},
         }}
       >
         Log in
       </Button>
       <Typography sx={{ textAlign: "center", marginTop: ".5rem" }}>
         Don't have an account?{" "}
-        <Link
-          style={{ color: "blue", textDecorationLine: "underline" }}
-          href="/auth/register"
-        >
+        <Link style={{ textDecorationLine: "underline" }} href="/auth/register">
           Sign up.
         </Link>
       </Typography>

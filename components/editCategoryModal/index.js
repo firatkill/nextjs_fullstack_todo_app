@@ -1,30 +1,39 @@
-import { postAPI } from "@/services/fetchAPI";
+import { putAPI } from "@/services/fetchAPI";
 import { useCategoryStore } from "@/zustand/categoryStore";
 import { useGlobalStore } from "@/zustand/globalStore";
-import { useUserStore } from "@/zustand/userStore";
 import { Button, TextField } from "@mui/material";
 import { useState } from "react";
 
-export default function AddCategoryModal() {
-  const [categoryName, setCategoryName] = useState("");
+export default function EditCategoryModal() {
   const setLoading = useGlobalStore((state) => state.handleLoading);
   const setModal = useGlobalStore((state) => state.handleActiveModal);
-  const addTodoCategory = useCategoryStore((state) => state.addTodoCategory);
-  const currentUser = useUserStore((state) => state.currentUser);
+  const updateTodoCategory = useCategoryStore(
+    (state) => state.updateTodoCategory
+  );
+  const changeCurrentCategory = useGlobalStore(
+    (state) => state.changeCurrentCategory
+  );
+  const currentTodoCategory = useGlobalStore(
+    (state) => state.currentTodoCategory
+  );
+  const [categoryName, setCategoryName] = useState(
+    currentTodoCategory.categoryName
+  );
 
   const submitHandler = (e) => {
     e.preventDefault();
     setLoading(true);
 
-    const req = postAPI(`/categories/postCategory`, {
+    const req = putAPI(`/categories/updateCategory`, {
+      ...currentTodoCategory,
       categoryName,
-      userId: currentUser.id,
     });
     req
       .then((res) => {
         setLoading(false);
 
-        addTodoCategory(res.category.category);
+        updateTodoCategory(res.category.category);
+        changeCurrentCategory(res.category.category);
         setModal(null);
       })
       .catch((er) => console.error("Hata oluştu: " + er));
@@ -54,7 +63,7 @@ export default function AddCategoryModal() {
           "&:hover": {},
         }}
       >
-        Add Category
+        Update Category
       </Button>
     </form>
   );

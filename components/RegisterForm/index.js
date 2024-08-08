@@ -2,9 +2,9 @@
 import mailStringCheck from "@/functions/other/mailStringCheck";
 import { postAPI } from "@/services/fetchAPI";
 import { Button, Divider, TextField, Typography } from "@mui/material";
-import { green } from "@mui/material/colors";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function RegisterForm() {
@@ -27,8 +27,11 @@ export default function RegisterForm() {
   }, []);
   const submitHandler = (e) => {
     e.preventDefault();
-    postAPI("/auth/register", { name, email, password });
+    postAPI("/auth/register", { name, email, password }).then(
+      (res) => res.status == "success" && redirect("/")
+    );
   };
+
   return (
     <form className="flex flex-col" onSubmit={submitHandler}>
       <Typography sx={{ textAlign: "center" }} variant="h4">
@@ -78,13 +81,9 @@ export default function RegisterForm() {
         type="submit"
         variant="contained"
         sx={{
-          color: "white",
           marginTop: "1rem",
-          background: green[800],
-          "&:hover": {
-            background: "white",
-            color: green[800],
-          },
+
+          "&:hover": {},
         }}
       >
         Sign Up

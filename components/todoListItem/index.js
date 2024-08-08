@@ -1,6 +1,6 @@
 "use client";
 import { Delete, DoneAll, Edit } from "@mui/icons-material";
-import { Typography } from "@mui/material";
+import { Box, ListItem, Typography } from "@mui/material";
 import styles from "./index.module.css";
 import { useGlobalStore } from "@/zustand/globalStore";
 import { useTodoStore } from "@/zustand/todoStore";
@@ -41,26 +41,28 @@ export default function TodoListItem(props) {
   };
 
   return (
-    <li
+    <ListItem
+      sx={{ border: 2 }}
       iscompleted={todo.completed ? "true" : "false"}
       className={styles.todoListItem}
     >
-      <div className={styles.leftPartition}>
-        <span
+      <Box sx={{ borderRight: 2 }} className={styles.leftPartition}>
+        <Box
+          sx={{ border: 2 }}
           onClick={todoCompletedHandler}
           iscompleted={todo.completed ? "true" : "false"}
           className={styles.completedIconSpan}
         >
           <DoneAll className={styles.completedIcon} />
-        </span>
-        <div className={styles.todoInfo}>
-          <p>{todo.todoName}</p>
-          <p>{todo.todoDescription}</p>
-        </div>
-      </div>
-      <div className={styles.rightPartition}>
+        </Box>
+        <Box className={styles.todoInfo}>
+          <Typography>{todo.todoName}</Typography>
+          <Typography>{todo.todoDescription}</Typography>
+        </Box>
+      </Box>
+      <Box className={styles.rightPartition}>
         <Typography
-          sx={{ background: todo.todoColor }}
+          sx={{ backgroundColor: `todoColor.${todo.todoColor}` }}
           className={styles.dateText}
         >
           {`${todoDate.toDateString()} ${todoDate.getHours()}:${
@@ -69,20 +71,32 @@ export default function TodoListItem(props) {
               : todoDate.getMinutes()
           }`}
         </Typography>
-        <div>
-          <div className={styles.icons}>
+        <Box>
+          <Box className={styles.icons}>
             <Edit
+              sx={{
+                "&:hover": {
+                  backgroundColor: "button.edit",
+                  color: "button.editText",
+                },
+              }}
               onClick={openModal}
               className={`${styles.icon} ${styles.editIcon}`}
             />
 
             <Delete
+              sx={{
+                "&:hover": {
+                  backgroundColor: "button.delete",
+                  color: "button.deleteText",
+                },
+              }}
               onClick={deleteHandler}
               className={`${styles.icon} ${styles.deleteIcon}`}
             />
-          </div>
-        </div>
-      </div>
-    </li>
+          </Box>
+        </Box>
+      </Box>
+    </ListItem>
   );
 }

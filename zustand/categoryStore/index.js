@@ -26,12 +26,15 @@ const useCategoryStore = create((set, get) => ({
     }));
   },
   updateTodoCategory: (categoryToUpdate) => {
-    const filteredCategs = get().todoCategories.filter(
-      (category) => category.id != categoryToUpdate.id
+    const updatedCategs = [...get().todoCategories];
+    const index = updatedCategs.findIndex(
+      (category) => category.id === categoryToUpdate.id
     );
+    updatedCategs[index] = categoryToUpdate;
+
     set((state) => ({
       ...state,
-      todoCategories: [...filteredCategs, categoryToUpdate],
+      todoCategories: updatedCategs,
     }));
   },
 }));

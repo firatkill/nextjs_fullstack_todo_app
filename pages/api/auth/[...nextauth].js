@@ -73,7 +73,7 @@ const authOptions = {
   // kullanıcı giriş yaptıktan sonra giriş yapan kullanıcının bilgilerini token değişkenine atıyoruz.
   session: {
     strategy: "jwt",
-    maxAge: 60, //1 * 24 * 60 * 60 1 days * 24 hours * 60 minutes * 60 seconds
+    maxAge: 1 * 24 * 60 * 60, //1 * 24 * 60 * 60 1 days * 24 hours * 60 minutes * 60 seconds
   },
 
   callbacks: {

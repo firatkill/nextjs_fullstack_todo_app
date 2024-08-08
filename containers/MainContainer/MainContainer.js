@@ -91,13 +91,14 @@ const MainContainer = ({ children }) => {
               sx={{
                 minWidth: "150px",
                 width: "25%",
-                color: "white",
-                background: "green",
-                border: "2px solid transparent",
+
+                color: "button.addText",
+                backgroundColor: "button.add",
+
+                boxShadow: 3,
                 "&:hover": {
-                  background: "transparent",
-                  borderColor: "green",
-                  color: "green",
+                  backgroundColor: "button.addText",
+                  color: "button.add",
                 },
               }}
             >
@@ -109,13 +110,14 @@ const MainContainer = ({ children }) => {
               sx={{
                 minWidth: "150px",
                 width: "25%",
-                color: "white",
-                background: "orange",
-                border: "2px solid transparent",
+
+                color: "button.editText",
+                backgroundColor: "button.edit",
+
+                boxShadow: 3,
                 "&:hover": {
-                  background: "transparent",
-                  borderColor: "orange",
-                  color: "orange",
+                  backgroundColor: "button.editText",
+                  color: "button.edit",
                 },
               }}
             >

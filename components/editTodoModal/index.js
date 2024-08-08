@@ -207,11 +207,8 @@ export default function EditTodoModal() {
           sx={{
             color: "white",
             marginTop: "1rem",
-            background: orange[800],
-            "&:hover": {
-              background: "white",
-              color: orange[800],
-            },
+
+            "&:hover": {},
           }}
         >
           Update

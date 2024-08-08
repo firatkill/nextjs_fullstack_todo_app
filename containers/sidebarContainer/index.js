@@ -16,7 +16,10 @@ export default function SidebarContainer({ children }) {
   return (
     <Box
       component="nav"
-      sx={{ width: { md: drawerWidth }, flexShrink: { md: 0 } }}
+      sx={{
+        width: { md: drawerWidth },
+        flexShrink: { md: 0 },
+      }}
       aria-label="mailbox folders"
     >
       {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
@@ -30,7 +33,9 @@ export default function SidebarContainer({ children }) {
         }}
         sx={{
           display: { md: "none", sm: "block" },
+
           "& .MuiDrawer-paper": {
+            //background: "unset",
             boxSizing: "border-box",
             width: drawerWidth,
           },
@@ -43,6 +48,7 @@ export default function SidebarContainer({ children }) {
         sx={{
           display: { md: "block", xs: "none" },
           "& .MuiDrawer-paper": {
+            //background: "unset",
             boxSizing: "border-box",
             width: drawerWidth,
           },

@@ -212,11 +212,8 @@ export default function AddTodoModal() {
           sx={{
             color: "white",
             marginTop: "1rem",
-            background: green[800],
-            "&:hover": {
-              background: "white",
-              color: green[800],
-            },
+
+            "&:hover": {},
           }}
         >
           Add Todo

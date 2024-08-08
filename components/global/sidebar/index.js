@@ -16,11 +16,11 @@ import {
 } from "@mui/icons-material";
 import { useGlobalStore } from "@/zustand/globalStore";
 import { Button } from "@mui/material";
-import { green } from "@mui/material/colors";
 import { useEffect } from "react";
 import { getAPI } from "@/services/fetchAPI";
 import { useCategoryStore } from "@/zustand/categoryStore";
 import { signOut } from "next-auth/react";
+import CategoryListItem from "@/components/categoryListItem";
 
 export default function SidebarComponent() {
   const todoCategories = useCategoryStore((state) => state.todoCategories);
@@ -62,6 +62,7 @@ export default function SidebarComponent() {
       <Divider />
       <Toolbar className="flex justify-between items-center">
         <Typography variant="h6">Categories</Typography>
+
         <Button
           type="button"
           onClick={() => {
@@ -69,21 +70,25 @@ export default function SidebarComponent() {
           }}
           variant="contained"
           sx={{
-            color: "white",
-            background: green[800],
+            color: "button.addText",
+            backgroundColor: "button.add",
             "&:hover": {
-              background: "white",
-              color: green[800],
+              backgroundColor: "button.addText",
+              color: "button.add",
             },
           }}
         >
           <AddCircleOutline />
         </Button>
       </Toolbar>
+      <Typography ml={1} variant="caption" display="block" gutterBottom>
+        Right click for options..
+      </Typography>
       <List sx={{ height: "50%", overflowY: "scroll" }}>
         <ListItem
           onClick={() => changeCategoryHandler(null)}
           sx={{
+            marginTop: "-1rem",
             "&:hover": {
               transition: "transform .15s ease-out",
               transform: "translateX(5%)",
@@ -100,24 +105,11 @@ export default function SidebarComponent() {
         </ListItem>
         {todoCategories.length > 0 &&
           todoCategories.map((category) => (
-            <ListItem
-              onClick={() => changeCategoryHandler(category)}
-              sx={{
-                "&:hover": {
-                  transition: "transform .15s ease-out",
-                  transform: "translateX(5%)",
-                },
-              }}
+            <CategoryListItem
+              onClicked={() => changeCategoryHandler(category)}
               key={category.id}
-              disablePadding
-            >
-              <ListItemButton>
-                <ListItemIcon>
-                  <KeyboardDoubleArrowRight />
-                </ListItemIcon>
-                <ListItemText primary={category.categoryName} />
-              </ListItemButton>
-            </ListItem>
+              category={category}
+            />
           ))}
       </List>
       <Divider />

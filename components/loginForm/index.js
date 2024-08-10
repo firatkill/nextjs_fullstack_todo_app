@@ -51,7 +51,11 @@ export default function LoginForm() {
           router.push("/");
         } else {
           // SNACKBAR res.error
-          openSnackbar({ severity: "error", text: res.error });
+          console.log(res);
+          openSnackbar({
+            severity: "error",
+            text: res.error,
+          });
         }
       })
       .catch((er) => console.error(er))

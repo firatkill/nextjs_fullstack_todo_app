@@ -22,6 +22,7 @@ const authOptions = {
           if (email) {
             // yukarıda aldığımız giriş bilgilerini => [email eşleşmesi, password doğrulaması] için fonksiyonumuza gönderiyoruz.
             const data = await postAPI(`/auth/login`, { email, password });
+
             if (!data || data.error || data == null) {
               if (data) {
                 throw new Error(data.error);
@@ -61,7 +62,7 @@ const authOptions = {
             throw new Error("Giriş işleminde bir hata oluştu.");
           }
         } catch (er) {
-          console.error(er);
+          throw new Error(er);
         }
       },
     }),

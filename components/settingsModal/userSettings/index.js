@@ -1,9 +1,10 @@
-import { Key, PersonPin } from "@mui/icons-material";
+import { HighlightOff, Key, PersonPin } from "@mui/icons-material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import { Box, Tab } from "@mui/material";
 import { useState } from "react";
 import ChangeName from "./changeName";
 import ChangePassword from "./changePassword";
+import DeepPreferences from "./deepPreferences";
 
 export default function UserSettings() {
   const [value, setValue] = useState("1");
@@ -27,6 +28,7 @@ export default function UserSettings() {
           <TabList centered onChange={handleChange}>
             <Tab icon={<PersonPin />} aria-label="personpin" value="1" />
             <Tab icon={<Key />} aria-label="pass" value="2" />
+            <Tab icon={<HighlightOff />} aria-label="pass" value="3" />
           </TabList>
         </Box>
         <TabPanel value="1">
@@ -34,6 +36,9 @@ export default function UserSettings() {
         </TabPanel>
         <TabPanel value="2">
           <ChangePassword />
+        </TabPanel>
+        <TabPanel value="3">
+          <DeepPreferences />
         </TabPanel>
       </TabContext>
     </Box>

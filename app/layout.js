@@ -3,8 +3,9 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 
 import { SessionProvider } from "next-auth/react";
-import ThemeProviderContainer from "@/containers/themeProviderContainer";
+
 import SnackbarComponent from "@/components/global/snackbarComponent";
+import ThemeProviderContainer from "@/containers/themeProviderContainer";
 
 const inter = Inter({ subsets: ["latin"] });
 

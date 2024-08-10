@@ -113,27 +113,38 @@ export default function UserPreferences() {
 
   return (
     <form onSubmit={submitHandler}>
-      <FormControl sx={{ width: "400px" }}>
+      <FormControl maxWidth="md" fullWidth>
         <Box
           sx={{
             display: "flex",
             flexDirection: "column",
           }}
         >
-          <FormLabel sx={{ borderBottom: 1, width: "fit-content" }}>
+          <FormLabel
+            sx={{
+              borderBottom: 1,
+              width: { sm: "fit-content", xs: "100%" },
+              textAlign: "center",
+            }}
+          >
             Theme{" "}
           </FormLabel>
 
           <FormGroup
             sx={{
               display: "flex",
-              flexDirection: "row",
-              width: "100%",
-              alignItems: "flex-end",
-              justifyContent: "space-between",
+
+              flexDirection: { xs: "column", sm: "row" },
+              width: "100% !important",
+
+              alignItems: { xs: "flex-start", sm: "flex-end " },
+              justifyContent: "space-around",
             }}
           >
             <FormControlLabel
+              sx={{
+                margin: { xs: "1rem 0rem 1rem 0rem", md: 0 },
+              }}
               checked={isSystemDefaults}
               onChange={() => {
                 setIsSystemDefaults(!isSystemDefaults);

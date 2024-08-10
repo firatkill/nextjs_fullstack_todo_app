@@ -8,7 +8,8 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: "auto",
+  width: "90%",
+  margin: "auto",
 
   bgcolor: "background.paper",
   border: "2px solid ",
@@ -39,7 +40,9 @@ export default function ModalContainer({ children }) {
       }}
     >
       <Fade in={open}>
-        <Box sx={style}>{children}</Box>
+        <Box maxWidth="md" sx={style}>
+          {children}
+        </Box>
       </Fade>
     </Modal>
   );

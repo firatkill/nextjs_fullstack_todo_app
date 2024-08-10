@@ -11,6 +11,7 @@ export default function AddCategoryModal() {
   const setModal = useGlobalStore((state) => state.handleActiveModal);
   const addTodoCategory = useCategoryStore((state) => state.addTodoCategory);
   const currentUser = useUserStore((state) => state.currentUser);
+  const openSnackbar = useGlobalStore((state) => state.openSnackbar);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -22,12 +23,19 @@ export default function AddCategoryModal() {
     });
     req
       .then((res) => {
-        setLoading(false);
-
-        addTodoCategory(res.category.category);
-        setModal(null);
+        if (res.success) {
+          addTodoCategory(res.category);
+          openSnackbar({ severity: "success", text: res.message });
+        } else {
+          // SNACKBAR res.error
+          openSnackbar({ severity: "error", text: res.error });
+        }
       })
-      .catch((er) => console.error("Hata oluştu: " + er));
+      .catch((er) => console.error("Hata oluştu: " + er))
+      .finally(() => {
+        setLoading(false);
+        setModal(null);
+      });
   };
   return (
     <form className="flex flex-col" onSubmit={submitHandler}>
@@ -50,8 +58,13 @@ export default function AddCategoryModal() {
         variant="contained"
         sx={{
           marginTop: "1rem",
+          color: "button.addText",
 
-          "&:hover": {},
+          backgroundColor: "button.add",
+          "&:hover": {
+            backgroundColor: "button.addText",
+            color: "button.add",
+          },
         }}
       >
         Add Category

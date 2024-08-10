@@ -1,5 +1,5 @@
-import DecryptPassword from "@/functions/auth/utils/decryptPassword";
-import mailStringCheck from "@/functions/other/mailStringCheck";
+import DecryptPassword from "@/functions/utils/DecryptPassword";
+import mailStringCheck from "@/functions/utils/mailStringCheck";
 import prisma from "@/lib/prisma";
 import { getDataByUnique } from "@/services/serviceOperations";
 

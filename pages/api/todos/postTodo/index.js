@@ -23,7 +23,7 @@ const handler = async (req, res) => {
       return res.status(200).json({
         success: true,
         message: "Todo ekleme işlemi başarılı",
-        todo: { todo },
+        todo: todo,
       });
     } catch (error) {
       return res.status(500).json({

@@ -1,6 +1,6 @@
-import getTurkeyTime from "@/functions/other/timeNow";
-import mailStringCheck from "@/functions/other/mailStringCheck";
-import EncryptPassword from "@/functions/auth/utils/encryptPassword";
+import getTurkeyTime from "@/functions/utils/timeNow";
+import mailStringCheck from "@/functions/utils/mailStringCheck";
+import EncryptPassword from "@/functions/utils/EncryptPassword";
 import { createNewData, getDataByUnique } from "@/services/serviceOperations";
 import prisma from "@/lib/prisma";
 import { getServerSession } from "next-auth";
@@ -62,13 +62,22 @@ const handler = async (req, res) => {
         }
 
         const userFromDB = await createNewData("user", data);
-        if (userFromDB.error || !userFromDB) {
+        const addedUserPreferences = await createNewData("userPreferences", {
+          userId: userFromDB.id,
+        });
+        if (
+          userFromDB.error ||
+          !userFromDB ||
+          !addedUserPreferences ||
+          addedUserPreferences.error
+        ) {
           throw new Error(
             "REGXL: Kayıt sırasında bir hata oluştu.: " + userFromDB.error
           );
         }
 
         return res.status(200).json({
+          success: true,
           status: "success",
           message:
             "Kayıt işlemi başarılı. Email ve Şifrenizle giriş yapabilirsiniz..",
@@ -76,7 +85,7 @@ const handler = async (req, res) => {
       } catch (error) {
         return res
           .status(500)
-          .json({ status: "error", message: error.message });
+          .json({ success: false, status: "error", error: error.message });
       }
     } else {
       return res.status(405).json({

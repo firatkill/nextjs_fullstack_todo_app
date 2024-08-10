@@ -25,7 +25,7 @@ const postAPI = async (
           return res.json();
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.error(err));
 
     return data;
   } catch (err) {
@@ -61,7 +61,7 @@ const putAPI = async (
           return res.json();
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.error(err));
     return data;
   } catch (err) {
     throw new Error(`API request failed: ${err}`);
@@ -86,7 +86,7 @@ const getAPI = async (
         return res.json();
       }
     })
-    .catch((err) => console.log(err));
+    .catch((err) => console.error(err));
   return data;
 };
 const deleteAPI = async (
@@ -106,7 +106,7 @@ const deleteAPI = async (
         return res.json();
       }
     })
-    .catch((err) => console.log(err));
+    .catch((err) => console.error(err));
   return data;
 };
 

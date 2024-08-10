@@ -32,16 +32,24 @@ export default function SidebarComponent() {
   );
   const setModal = useGlobalStore((state) => state.handleActiveModal);
   const setLoading = useGlobalStore((state) => state.handleLoading);
+  const openSnackbar = useGlobalStore((state) => state.openSnackbar);
 
   useEffect(() => {
     setLoading(true);
     const categoriesData = getAPI("/categories/getAllCategories");
     categoriesData
       .then((res) => {
-        setTodoCategories(res);
-        setLoading(false);
+        if (res.success) {
+          setTodoCategories(res.categories);
+        } else {
+          // SNACKBAR res.error
+          openSnackbar({ severity: "error", text: res.error });
+        }
       })
-      .catch((er) => console.error("Hata Oluştu: " + er));
+      .catch((er) => console.error("Hata Oluştu: " + er))
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
 
   return (
@@ -114,7 +122,12 @@ export default function SidebarComponent() {
       </List>
       <Divider />
       <List>
-        <ListItem disablePadding>
+        <ListItem
+          onClick={(e) => {
+            setModal("settings");
+          }}
+          disablePadding
+        >
           <ListItemButton>
             <ListItemIcon>
               <ManageAccounts />

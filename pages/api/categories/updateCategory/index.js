@@ -26,8 +26,8 @@ const handler = async (req, res) => {
 
       return res.status(200).json({
         success: true,
-        message: "Category güncelleme işlemi başarılı",
-        category: { category },
+        message: "Kategori güncelleme işlemi başarılı",
+        category: category,
       });
     } catch (error) {
       return res.status(500).json({

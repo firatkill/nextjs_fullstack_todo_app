@@ -14,7 +14,7 @@ const handler = async (req, res) => {
       }
 
       const { id, ...todoToUpdate } = data;
-      const todo = updateDataByAny("todo", { id: data.id }, todoToUpdate);
+      const todo = await updateDataByAny("todo", { id: data.id }, todoToUpdate);
 
       return res.status(200).json({
         success: true,

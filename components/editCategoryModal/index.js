@@ -30,13 +30,16 @@ export default function EditCategoryModal() {
     });
     req
       .then((res) => {
-        setLoading(false);
-
-        updateTodoCategory(res.category.category);
-        changeCurrentCategory(res.category.category);
-        setModal(null);
+        if (res.success) {
+          updateTodoCategory(res.category);
+          changeCurrentCategory(res.category);
+        }
       })
-      .catch((er) => console.error("Hata oluştu: " + er));
+      .catch((er) => console.error("Hata oluştu: " + er))
+      .finally(() => {
+        setLoading(false);
+        setModal(null);
+      });
   };
   return (
     <form className="flex flex-col" onSubmit={submitHandler}>
@@ -59,8 +62,13 @@ export default function EditCategoryModal() {
         variant="contained"
         sx={{
           marginTop: "1rem",
+          color: "button.editText",
 
-          "&:hover": {},
+          backgroundColor: "button.edit",
+          "&:hover": {
+            backgroundColor: "button.editText",
+            color: "button.edit",
+          },
         }}
       >
         Update Category

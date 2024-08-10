@@ -5,7 +5,14 @@ const useGlobalStore = create((set, get) => ({
   loading: false,
   sidebarOptions: { mobileOpen: false, isClosing: false },
   activeModal: null,
-
+  snackbarOptions: {
+    open: false,
+    autoHideDuration: 4000,
+    alert: {
+      severity: "success",
+      text: "Default alert",
+    },
+  },
   handleLoading: (isLoading) => {
     set((state) => ({
       ...state,
@@ -45,6 +52,25 @@ const useGlobalStore = create((set, get) => ({
         },
       }));
     }
+  },
+  closeSnackbar: () => {
+    set((state) => ({
+      ...state,
+      snackbarOptions: {
+        ...state.snackbarOptions,
+        open: false,
+      },
+    }));
+  },
+  openSnackbar: (alert) => {
+    set((state) => ({
+      ...state,
+      snackbarOptions: {
+        ...state.snackbarOptions,
+        open: true,
+        alert: alert,
+      },
+    }));
   },
 }));
 

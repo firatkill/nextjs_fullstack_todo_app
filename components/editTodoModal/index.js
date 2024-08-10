@@ -38,6 +38,7 @@ export default function EditTodoModal() {
   const [date, setDate] = useState(currentTodo.date);
   const [todoColor, setTodoColor] = useState(currentTodo.todoColor);
   const setLoading = useGlobalStore((state) => state.handleLoading);
+  const openSnackbar = useGlobalStore((state) => state.openSnackbar);
 
   const radioChangeHandler = (e) => {
     setTodoColor(e.target.value);
@@ -65,11 +66,20 @@ export default function EditTodoModal() {
     const req = putAPI(`/todos/updateTodo`, todoToUpdate);
     req
       .then((res) => {
-        setLoading(false);
-        updateTodo(todoToUpdate);
-        setModal(null);
+        if (res.success) {
+          updateTodo(res.todo);
+          // SNACKBAR res.message
+          openSnackbar({ severity: "success", text: res.message });
+        } else {
+          // SNACKBAR res.error
+          openSnackbar({ severity: "error", text: res.error });
+        }
       })
-      .catch((er) => console.error("Hata oluştu: " + er));
+      .catch((er) => console.error("Hata oluştu: " + er))
+      .finally(() => {
+        setModal(null);
+        setLoading(false);
+      });
   };
 
   useEffect(() => {
@@ -77,10 +87,18 @@ export default function EditTodoModal() {
     const categoriesData = getAPI("/categories/getAllCategories");
     categoriesData
       .then((res) => {
-        setTodoCategories(res);
-        setLoading(false);
+        if (res.success) {
+          setTodoCategories(res.categories);
+          // SNACKBAR res.message
+        } else {
+          // SNACKBAR res.error
+          openSnackbar({ severity: "error", text: res.error });
+        }
       })
-      .catch((er) => console.error("Hata Oluştu: " + er));
+      .catch((er) => console.error("Hata Oluştu: " + er))
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
 
   return (
@@ -205,10 +223,14 @@ export default function EditTodoModal() {
           type="submit"
           variant="contained"
           sx={{
-            color: "white",
             marginTop: "1rem",
-
-            "&:hover": {},
+            color: "button.editText",
+            mt: 3,
+            backgroundColor: "button.edit",
+            "&:hover": {
+              backgroundColor: "button.editText",
+              color: "button.edit",
+            },
           }}
         >
           Update

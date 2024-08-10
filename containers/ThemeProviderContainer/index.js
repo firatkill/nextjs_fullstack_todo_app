@@ -1,6 +1,11 @@
 "use client";
-import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
-import { createContext, useMemo, useState } from "react";
+import {
+  createTheme,
+  CssBaseline,
+  ThemeProvider,
+  useMediaQuery,
+} from "@mui/material";
+import { createContext, useEffect, useMemo, useState } from "react";
 import {
   blue,
   deepOrange,
@@ -9,11 +14,29 @@ import {
   pink,
   red,
 } from "@mui/material/colors";
+import { useUserStore } from "@/zustand/userStore";
 
 export const ColorModeContext = createContext({ toggleColorMode: () => {} });
 
 export default function ThemeProviderContainer({ children }) {
-  const [mode, setMode] = useState("light");
+  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
+  const userPreferences = useUserStore((state) => state.userPreferences);
+  const [mode, setMode] = useState(prefersDarkMode ? "dark" : "light");
+
+  useEffect(() => {
+    if (userPreferences) {
+      if (userPreferences.themeSystemDefaults) {
+        setMode(prefersDarkMode ? "dark" : "light");
+      } else {
+        if (userPreferences.theme == "light") {
+          setMode("light");
+        } else {
+          setMode("dark");
+        }
+      }
+    }
+  }, [userPreferences]);
+
   const getDesignTokens = (mode) => ({
     palette: {
       mode,
@@ -59,7 +82,7 @@ export default function ThemeProviderContainer({ children }) {
         : {
             // palette values for dark mode
             primary: {
-              main: red[500],
+              main: "#fff",
             },
             divider: "rgba(255, 255, 255, 0.12)",
             background: {
@@ -100,8 +123,8 @@ export default function ThemeProviderContainer({ children }) {
   const colorMode = useMemo(
     () => ({
       // The dark mode switch would invoke this method
-      toggleColorMode: () => {
-        setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
+      toggleColorMode: (mode) => {
+        setMode(mode);
       },
     }),
     []

@@ -13,9 +13,10 @@ export default async function handler(req, res) {
       }
       await deleteDataByMany("todo", where);
 
-      return res
-        .status(200)
-        .json({ message: "Tamamlanan Todo'lar başarıyla silindi." });
+      return res.status(200).json({
+        success: true,
+        message: "Tamamlanan Todo'lar başarıyla silindi.",
+      });
     } catch (error) {
       return res.status(500).json({ error: error.message });
     }

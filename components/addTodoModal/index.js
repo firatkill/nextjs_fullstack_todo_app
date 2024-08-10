@@ -38,6 +38,7 @@ export default function AddTodoModal() {
   const [todoColor, setTodoColor] = useState();
   const setModal = useGlobalStore((state) => state.handleActiveModal);
   const setLoading = useGlobalStore((state) => state.handleLoading);
+  const openSnackbar = useGlobalStore((state) => state.openSnackbar);
   const radioChangeHandler = (e) => {
     setTodoColor(e.target.value);
   };
@@ -57,7 +58,6 @@ export default function AddTodoModal() {
       date,
       todoColor,
       todoCategoryId,
-      userId: currentUser.id,
     };
 
     //Post todotoAdd
@@ -66,12 +66,20 @@ export default function AddTodoModal() {
     const req = postAPI(`/todos/postTodo`, todoToAdd);
     req
       .then((res) => {
-        setLoading(false);
-
-        addTodo(res.todo.todo);
-        setModal(null);
+        if (res.success) {
+          addTodo(res.todo);
+          // SNACKBAR res.message
+          openSnackbar({ severity: "success", text: res.message });
+        } else {
+          // SNACKBAR res.error
+          openSnackbar({ severity: "error", text: res.error });
+        }
       })
-      .catch((er) => console.error("Hata oluştu: " + er));
+      .catch((er) => console.error("Hata oluştu: " + er))
+      .finally(() => {
+        setModal(null);
+        setLoading(false);
+      });
   };
 
   useEffect(() => {
@@ -79,18 +87,19 @@ export default function AddTodoModal() {
     const categoriesData = getAPI("/categories/getAllCategories");
     categoriesData
       .then((res) => {
-        setTodoCategories(res);
-        setLoading(false);
+        setTodoCategories(res.categories);
       })
       .catch((er) => {
         console.error("Hata Oluştu: " + er);
+      })
+      .finally(() => {
         setLoading(false);
       });
   }, []);
 
   return (
-    <>
-      <form className="flex flex-col" onSubmit={submitHandler}>
+    <form onSubmit={submitHandler}>
+      <FormControl className="flex flex-col" onSubmit={submitHandler}>
         <TextField
           error={todoName.length < 3}
           helperText={
@@ -210,15 +219,18 @@ export default function AddTodoModal() {
           type="submit"
           variant="contained"
           sx={{
-            color: "white",
-            marginTop: "1rem",
-
-            "&:hover": {},
+            mt: "1rem",
+            color: "button.addText",
+            backgroundColor: "button.add",
+            "&:hover": {
+              backgroundColor: "button.addText",
+              color: "button.add",
+            },
           }}
         >
           Add Todo
         </Button>
-      </form>
-    </>
+      </FormControl>
+    </form>
   );
 }

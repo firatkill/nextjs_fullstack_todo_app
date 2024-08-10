@@ -1,17 +1,21 @@
 "use client";
-import mailStringCheck from "@/functions/other/mailStringCheck";
+import mailStringCheck from "@/functions/utils/mailStringCheck";
 import { postAPI } from "@/services/fetchAPI";
+import { useGlobalStore } from "@/zustand/globalStore";
 import { Button, Divider, TextField, Typography } from "@mui/material";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function RegisterForm() {
+  const router = useRouter();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isEmailValid, setIsEmailValid] = useState(false);
+  const setLoading = useGlobalStore((state) => state.handleLoading);
+  const openSnackbar = useGlobalStore((state) => state.openSnackbar);
 
   const checkEmail = async (email) => {
     const isValid = await mailStringCheck(email);
@@ -25,11 +29,28 @@ export default function RegisterForm() {
   useEffect(() => {
     signOut({ redirect: false });
   }, []);
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
-    postAPI("/auth/register", { name, email, password }).then(
-      (res) => res.status == "success" && redirect("/")
-    );
+    setLoading(true);
+    await postAPI("/auth/register", { name, email, password })
+      .then((res) => {
+        if (res.success) {
+          // SNACKBAR Kayıt işlemi başarılı, yönlendiriliyorsunuz.
+
+          openSnackbar({
+            severity: "success",
+            text: res.message,
+          });
+          router.push("/auth/login");
+        } else {
+          // SNACKBAR res.error
+          openSnackbar({ severity: "error", text: res.error });
+        }
+      })
+      .catch((err) => console.error(err))
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   return (

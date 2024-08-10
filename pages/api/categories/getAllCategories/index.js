@@ -12,7 +12,11 @@ export default async function handler(req, res) {
       const data = await getDataByMany("category", {
         userId: session.user.id,
       });
-      return res.status(200).json(data);
+      return res.status(200).json({
+        success: true,
+        categories: data,
+        message: "Kategoriler başarıyla getirildi.",
+      });
     } catch (error) {
       return res.status(500).json({ error: error.message });
     }

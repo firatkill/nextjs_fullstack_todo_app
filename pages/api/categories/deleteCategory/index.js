@@ -9,7 +9,9 @@ export default async function handler(req, res) {
       const { id } = req.query;
       await deleteDataByAny("category", { id: id });
 
-      return res.status(200).json({ message: "Kategori başarıyla silindi." });
+      return res
+        .status(200)
+        .json({ success: true, message: "Kategori başarıyla silindi." });
     } catch (error) {
       return res.status(500).json({ error: error.message });
     }

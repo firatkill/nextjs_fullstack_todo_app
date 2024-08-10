@@ -12,6 +12,7 @@ export default function TodoListItem(props) {
   const handleEditModal = useGlobalStore((state) => state.handleActiveModal);
   const setCurrentTodo = useTodoStore((state) => state.changeCurrentTodo);
   const setLoading = useGlobalStore((state) => state.handleLoading);
+  const openSnackbar = useGlobalStore((state) => state.openSnackbar);
   const todoDate = new Date(todo.date);
   const openModal = () => {
     setCurrentTodo(todo);
@@ -24,19 +25,37 @@ export default function TodoListItem(props) {
     const req = putAPI(`/todos/updateTodo`, todoToUpdate);
     req
       .then((res) => {
-        updateTodo(todoToUpdate);
-
-        setLoading(false);
+        if (res.success) {
+          updateTodo(res.todo);
+          // SNACKBAR res.message
+        } else {
+          //  SNACKBAR res.error
+          openSnackbar({ severity: "error", text: res.error });
+        }
       })
-      .catch((er) => console.error("Hata oluştu: " + er));
+      .catch((er) => console.error("Hata oluştu: " + er))
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   const deleteHandler = () => {
     if (confirm("Are you sure you want to delete this todo?")) {
+      setLoading(true);
       const req = deleteAPI(`/todos/deleteTodo?id=${props.todo.id}`);
       req
-        .then((res) => deleteTodo(props.todo.id))
-        .catch((er) => console.error("Hata oluştu: " + er));
+        .then((res) => {
+          if (res.success) {
+            deleteTodo(props.todo.id);
+            // SNACKBAR res.message
+            openSnackbar({ severity: "success", text: res.message });
+          } else {
+            // SNACKBAR res.error
+            openSnackbar({ severity: "error", text: res.error });
+          }
+        })
+        .catch((er) => console.error("Hata oluştu: " + er))
+        .finally(() => setLoading(false));
     }
   };
 

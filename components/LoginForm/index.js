@@ -1,20 +1,23 @@
 "use client";
-import mailStringCheck from "@/functions/other/mailStringCheck";
+import mailStringCheck from "@/functions/utils/mailStringCheck";
 import { useGlobalStore } from "@/zustand/globalStore";
 import { useUserStore } from "@/zustand/userStore";
 import { Button, Divider, TextField, Typography } from "@mui/material";
 import { signIn, signOut } from "next-auth/react";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
+  const router = useRouter();
   const [password, setPassword] = useState("");
   const [isEmailValid, setIsEmailValid] = useState(false);
   const setLoading = useGlobalStore((state) => state.handleLoading);
   const setCurrentUser = useUserStore((state) => state.setCurrentUser);
-
+  const setUserPreferences = useUserStore((state) => state.setUserPreferences);
+  const openSnackbar = useGlobalStore((state) => state.openSnackbar);
   const checkEmail = async (email) => {
     const isValid = await mailStringCheck(email);
     if (isValid && !isEmailValid) {
@@ -31,12 +34,30 @@ export default function LoginForm() {
   const submitHandler = async (e) => {
     e.preventDefault();
     setLoading(true);
+
     await signIn("credentials", {
       email: email,
       password: password,
-      redirect: true,
+      redirect: false,
       callbackUrl: "/",
-    }).then((res) => setLoading(false));
+    })
+      .then((res) => {
+        if (res.ok) {
+          // SNACKBAR Giriş işlemi başarılı, yönlendiriliyorsunuz.
+          openSnackbar({
+            severity: "success",
+            text: "Giriş işlemi başarılı. Yönlendiriliyorsunuz..",
+          });
+          router.push("/");
+        } else {
+          // SNACKBAR res.error
+          openSnackbar({ severity: "error", text: res.error });
+        }
+      })
+      .catch((er) => console.error(er))
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   return (

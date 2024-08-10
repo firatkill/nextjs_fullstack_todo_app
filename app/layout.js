@@ -3,7 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 
 import { SessionProvider } from "next-auth/react";
-import ThemeProviderContainer from "@/containers/ThemeProviderContainer";
+import ThemeProviderContainer from "@/containers/themeProviderContainer";
+import SnackbarComponent from "@/components/global/snackbarComponent";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -12,6 +13,7 @@ export default function RootLayout({ children, session }) {
     <html suppressHydrationWarning lang="en">
       <body className={inter.className}>
         <ThemeProviderContainer>
+          <SnackbarComponent />
           <SessionProvider session={session}>{children}</SessionProvider>
         </ThemeProviderContainer>
       </body>

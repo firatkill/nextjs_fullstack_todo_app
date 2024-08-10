@@ -79,9 +79,17 @@ const authOptions = {
   callbacks: {
     // jwt fonksiyonu ile kullanıcı giriş yaptıktan sonra giriş yapan kullanıcının bilgilerini token değişkenine atıyoruz.
     // bu bilgileri session fonksiyonunda kullanacağız.
-    async jwt({ token, user }) {
-      return { ...token, ...user };
+    async jwt({ token, user, trigger, session }) {
+      if (user) {
+        token = user;
+      }
+      if (trigger === "update" && session) {
+        token = { ...token, ...session };
+        return token;
+      }
+      return token;
     },
+    //return { ...token, ...user };
     // session fonksiyonu ile kullanıcı giriş yaptıktan sonra giriş yapan kullanıcının bilgilerini session değişkenine atıyoruz.
     async session({ session, token }) {
       session.user = token;

@@ -49,12 +49,16 @@ export default function CategoryListItem(props) {
       );
       req
         .then((res) => {
-          deleteTodoCategory(props.category.id);
-          deleteTodosByCategory(props.category.id);
-          changeCurrentCategory(null);
-          setLoading(false);
+          if (res.success) {
+            deleteTodoCategory(props.category.id);
+            deleteTodosByCategory(props.category.id);
+            changeCurrentCategory(null);
+          }
         })
-        .catch((er) => console.error("Hata oluştu: " + er));
+        .catch((er) => console.error("Hata oluştu: " + er))
+        .finally(() => {
+          setLoading(false);
+        });
     }
   };
   return (

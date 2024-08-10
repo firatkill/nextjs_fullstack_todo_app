@@ -65,6 +65,7 @@ export default function ThemeProviderContainer({ children }) {
               blue: blue[500],
               orange: orange[500],
               pink: pink[500],
+              listItem: "#fffff9",
             },
             action: {
               active: "rgba(0, 0, 0, 0.54)",
@@ -93,7 +94,7 @@ export default function ThemeProviderContainer({ children }) {
               add: green[300],
               addText: "#fff",
               edit: deepOrange[300],
-              delete: red["A400"],
+              delete: red[400],
               deleteText: "#fff",
               editText: "#fff",
             },
@@ -103,6 +104,7 @@ export default function ThemeProviderContainer({ children }) {
               blue: "rgba(144, 202, 249,0.5)",
               orange: "rgba(255, 204, 128,.5)",
               pink: "rgba(244, 143, 177,0.5)",
+              listItem: "#14181F",
             },
             action: {
               active: "#fff",

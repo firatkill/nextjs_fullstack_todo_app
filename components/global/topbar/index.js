@@ -21,16 +21,19 @@ export default function TopbarComponent() {
 
   return (
     <AppBar
-      position="fixed"
       sx={{
-        bgcolor: "background.paper",
+        position: "fixed",
+        bgcolor: "background.default",
+
+        opacity: 1,
         width: { md: `calc(100% - ${drawerWidth}px)` },
         ml: { sm: `${drawerWidth}px` },
-        boxShadow: "none",
+        boxShadow: 3,
       }}
     >
       <Toolbar
         sx={{
+          backgroundColor: "background.paper",
           height: 75,
           display: "flex",
           justifyContent: "space-between",

@@ -61,11 +61,27 @@ export default function TodoListItem(props) {
 
   return (
     <ListItem
-      sx={{ border: 2 }}
+      sx={{
+        boxShadow: 3,
+        backgroundColor: "todoColor.listItem",
+        width: { xs: "99% ", md: "95%" },
+        alignSelf: "center",
+        justifySelf: "center",
+
+        position: "relative",
+      }}
       iscompleted={todo.completed ? "true" : "false"}
       className={styles.todoListItem}
     >
-      <Box sx={{ borderRight: 2 }} className={styles.leftPartition}>
+      <Box
+        sx={{
+          overflow: "hidden",
+          paddingRight: "1rem",
+          borderRight: 2,
+          width: "95%",
+        }}
+        className={styles.leftPartition}
+      >
         <Box
           sx={{ border: 2 }}
           onClick={todoCompletedHandler}
@@ -75,13 +91,28 @@ export default function TodoListItem(props) {
           <DoneAll className={styles.completedIcon} />
         </Box>
         <Box className={styles.todoInfo}>
-          <Typography>{todo.todoName}</Typography>
-          <Typography>{todo.todoDescription}</Typography>
+          <Typography title={todo.todoName}>{todo.todoName}</Typography>
+          <Typography title={todo.todoDescription}>
+            {todo.todoDescription}
+          </Typography>
         </Box>
       </Box>
-      <Box className={styles.rightPartition}>
+      <Box
+        sx={{
+          position: "absolute",
+          top: 0,
+          zIndex: -1,
+          width: "100%",
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
         <Typography
-          sx={{ backgroundColor: `todoColor.${todo.todoColor}` }}
+          sx={{
+            width: "50%",
+            maxWidth: "max-content",
+            backgroundColor: `todoColor.${todo.todoColor}`,
+          }}
           className={styles.dateText}
         >
           {`${todoDate.toDateString()} ${todoDate.getHours()}:${
@@ -90,6 +121,8 @@ export default function TodoListItem(props) {
               : todoDate.getMinutes()
           }`}
         </Typography>
+      </Box>
+      <Box sx={{}} className={styles.rightPartition}>
         <Box>
           <Box className={styles.icons}>
             <Edit

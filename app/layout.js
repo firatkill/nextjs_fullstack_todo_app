@@ -5,7 +5,7 @@ import "./globals.css";
 import { SessionProvider } from "next-auth/react";
 
 import SnackbarComponent from "@/components/global/snackbarComponent";
-import ThemeProviderContainer from "@/containers/themeProviderContainerr";
+import ThemeProviderContainer from "@/containers/themeProviderContainer";
 
 const inter = Inter({ subsets: ["latin"] });
 

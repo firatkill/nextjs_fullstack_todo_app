@@ -1,7 +1,7 @@
 import { styled, useTheme } from "@mui/material/styles";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
-import { ColorModeContext } from "@/containers/themeProviderContainerr";
+import { ColorModeContext } from "@/containers/themeProviderContainer";
 import { useContext, useState } from "react";
 import {
   Box,

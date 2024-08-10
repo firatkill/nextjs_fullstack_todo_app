@@ -68,7 +68,7 @@ export default function TodoListItem(props) {
         alignSelf: "center",
         justifySelf: "center",
 
-        position: "relative",
+        backgroundColor: `todoColor.${todo.todoColor}`,
       }}
       iscompleted={todo.completed ? "true" : "false"}
       className={styles.todoListItem}
@@ -76,52 +76,53 @@ export default function TodoListItem(props) {
       <Box
         sx={{
           overflow: "hidden",
-          paddingRight: "1rem",
+
           borderRight: 2,
-          width: "95%",
+          width: "95% !important",
+          maxWidth: "95%",
+          position: "relative",
         }}
         className={styles.leftPartition}
       >
         <Box
-          sx={{ border: 2 }}
+          sx={{ border: 2, alignSelf: "flex-start" }}
           onClick={todoCompletedHandler}
           iscompleted={todo.completed ? "true" : "false"}
           className={styles.completedIconSpan}
         >
           <DoneAll className={styles.completedIcon} />
         </Box>
-        <Box className={styles.todoInfo}>
-          <Typography title={todo.todoName}>{todo.todoName}</Typography>
-          <Typography title={todo.todoDescription}>
+        <Box
+          sx={{ width: "100%", overflow: "hidden" }}
+          className={styles.todoInfo}
+        >
+          <Typography
+            sx={{ maxWidth: "100%", textOverflow: "hidden" }}
+            title={todo.todoName}
+          >
+            {todo.todoName}
+          </Typography>
+          <Typography
+            sx={{ maxWidth: "100%", textOverflow: "hidden" }}
+            title={todo.todoDescription}
+          >
             {todo.todoDescription}
+          </Typography>
+          <Typography
+            sx={{
+              alignSelf: "flex-end",
+              paddingRight: "1rem",
+            }}
+          >
+            {`${todoDate.toDateString()} ${todoDate.getHours()}:${
+              todoDate.getMinutes() < 10
+                ? "0" + todoDate.getMinutes()
+                : todoDate.getMinutes()
+            }`}
           </Typography>
         </Box>
       </Box>
-      <Box
-        sx={{
-          position: "absolute",
-          top: 0,
-          zIndex: -1,
-          width: "100%",
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
-        <Typography
-          sx={{
-            width: "50%",
-            maxWidth: "max-content",
-            backgroundColor: `todoColor.${todo.todoColor}`,
-          }}
-          className={styles.dateText}
-        >
-          {`${todoDate.toDateString()} ${todoDate.getHours()}:${
-            todoDate.getMinutes() < 10
-              ? "0" + todoDate.getMinutes()
-              : todoDate.getMinutes()
-          }`}
-        </Typography>
-      </Box>
+
       <Box sx={{}} className={styles.rightPartition}>
         <Box>
           <Box className={styles.icons}>

@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 import { drawerWidth } from "@/globalVariables";
 import { useGlobalStore } from "@/zustand/globalStore";
 import { useContext } from "react";
-import { ColorModeContext } from "@/containers/themeProviderContainer";
+import { ColorModeContext } from "@/containers/themeProviderContainerr";
 
 export default function TopbarComponent() {
   const handleDrawerToggle = useGlobalStore(

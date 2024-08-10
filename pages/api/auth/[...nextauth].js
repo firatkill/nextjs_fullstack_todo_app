@@ -14,50 +14,54 @@ const authOptions = {
       },
 
       async authorize(credentials) {
-        // kontrol edilecek (email ve password) bilgilerini credentials değişkeninden alıyoruz.
-        const { email, password } = credentials;
-        // giriş yapılacak sayfayı role değişkeninden alıyoruz.
+        try {
+          // kontrol edilecek (email ve password) bilgilerini credentials değişkeninden alıyoruz.
+          const { email, password } = credentials;
+          // giriş yapılacak sayfayı role değişkeninden alıyoruz.
 
-        if (email) {
-          // yukarıda aldığımız giriş bilgilerini => [email eşleşmesi, password doğrulaması] için fonksiyonumuza gönderiyoruz.
-          const data = await postAPI(`/auth/login`, { email, password });
-          if (!data || data.error || data == null) {
-            if (data) {
-              throw new Error(data.error);
-            } else {
-              throw new Error(
-                "Giriş işleminde bir hata oluştu. Lütfen daha sonra tekrar deneyiniz."
-              );
+          if (email) {
+            // yukarıda aldığımız giriş bilgilerini => [email eşleşmesi, password doğrulaması] için fonksiyonumuza gönderiyoruz.
+            const data = await postAPI(`/auth/login`, { email, password });
+            if (!data || data.error || data == null) {
+              if (data) {
+                throw new Error(data.error);
+              } else {
+                throw new Error(
+                  "Giriş işleminde bir hata oluştu. Lütfen daha sonra tekrar deneyiniz."
+                );
+              }
             }
-          }
 
-          const { userFromDB, success, error, status } = data;
-          if (
-            userFromDB === null ||
-            !success ||
-            userFromDB === undefined ||
-            error ||
-            !userFromDB
-          ) {
-            let error2 = new Error();
-            error2.message = error;
-            error2.status = status;
-            throw error2;
-          }
-          if (!userFromDB.name || !userFromDB.email || !userFromDB.id) {
+            const { userFromDB, success, error, status } = data;
+            if (
+              userFromDB === null ||
+              !success ||
+              userFromDB === undefined ||
+              error ||
+              !userFromDB
+            ) {
+              let error2 = new Error();
+              error2.message = error;
+              error2.status = status;
+              throw error2;
+            }
+            if (!userFromDB.name || !userFromDB.email || !userFromDB.id) {
+              throw new Error("Giriş işleminde bir hata oluştu.");
+            }
+            const user = {
+              id: userFromDB.id,
+              name: userFromDB.name,
+              email: userFromDB.email,
+            };
+
+            if (user) {
+              return user;
+            }
+          } else {
             throw new Error("Giriş işleminde bir hata oluştu.");
           }
-          const user = {
-            id: userFromDB.id,
-            name: userFromDB.name,
-            email: userFromDB.email,
-          };
-
-          if (user) {
-            return user;
-          }
-        } else {
-          throw new Error("Giriş işleminde bir hata oluştu.");
+        } catch (er) {
+          console.error(er);
         }
       },
     }),
